@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow, Notification } = require('electron');
 
 
 function createWindow() {
@@ -13,7 +13,12 @@ function createWindow() {
     win.webContents.openDevTools();
 }
 
-app.whenReady().then(createWindow);
+app.whenReady()
+  .then(() => {
+    createWindow();
+    const notification = new Notification({title: 'Hello World', body: 'My test message'});
+    notification.show();
+  });
 
 app.on('window-all-closed', () => {
     if(process.platform !== 'darwin'){
