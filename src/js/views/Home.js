@@ -3,9 +3,9 @@ import ViewTitle from "../components/shared/ViewTitle";
 import JoinedChatsList from "../components/JoinedChatsList";
 import AvailableChatsList from "../components/AvailableChatsList";
 import { useDispatch, useSelector } from "react-redux";
-
+import { withBaseLayout } from "../layouts/Base";
 import { fetchChats } from "../actions/chats";
-export default function Home() {
+function Home() {
   const dispatch = useDispatch();
   const chats = useSelector(({ chats }) => chats.items);
   useEffect(() => {
@@ -23,3 +23,4 @@ export default function Home() {
     </div>
   );
 }
+export default withBaseLayout(Home);

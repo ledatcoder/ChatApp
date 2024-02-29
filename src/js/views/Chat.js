@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import ChatUserList from "../components/ChatUsersList";
 import ChatMessagesList from "../components/ChatMessagesList";
 import ViewTitle from "../components/shared/ViewTitle";
-
-export default function Chat() {
+import { withBaseLayout } from '../layouts/Base';
+function Chat() {
   const { id } = useParams();
   return (
     <div className="row no-gutters fh">
@@ -18,3 +18,4 @@ export default function Chat() {
     </div>
   );
 }
+export default withBaseLayout(Chat, {canGoBack: true});
