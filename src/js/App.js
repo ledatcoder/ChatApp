@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import { listenToAuthChanges } from "./actions/auth";
 import LoadingView from "./components/shared/LoadingView";
+import { listenToConnectionChanges } from "./actions/app";
 const ContentWrapper = ({ children }) => (
   <div className="content-wrapper">{children}</div>
 );
@@ -37,18 +38,29 @@ function AuthRoute({ children, ...rest }) {
 function ChatApp() {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
+  const isOnline = useSelector(({ app }) => app.isOnline);
 
   useEffect(() => {
-    dispatch(listenToAuthChanges());
-  }, [dispatch]);
+    const unsubFromAuth = dispatch(listenToAuthChanges());
 
+    const unsubFromConnection = dispatch(listenToConnectionChanges());
+
+    return () => {
+      unsubFromAuth();
+      unsubFromConnection();
+    };
+  }, [dispatch]);
+  if (!isOnline) {
+    return (
+      <LoadingView message="Application has been disconnected from the internet. Please reconnect..." />
+    );
+  }
   if (isChecking) {
     return <LoadingView />;
   }
 
   return (
     <Router>
-     
       <ContentWrapper>
         <Switch>
           <Route path="/" exact>
